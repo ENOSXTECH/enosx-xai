@@ -17,7 +17,8 @@ import WelcomeScreen from "@/components/WelcomeScreen";
 import { useGroq } from "@/hooks/useGroq";
 import { useVoice } from "@/hooks/useVoice";
 import { Conversation, Message } from "@/lib/types";
-import { BotMessageSquare, Wifi, Zap, ChevronDown, Mic } from "lucide-react";
+import { BotMessageSquare, Wifi, Zap, ChevronDown, Mic, Info } from "lucide-react";
+import { useLocation } from "wouter";
 
 const BG_URL =
   "https://d2xsxph8kpxj0f.cloudfront.net/310519663581012760/3KsVJNzTNHX32FLQf9aZCC/enosx-bg-mesh-dMF6AjTJ234cK4z3d5pivU.webp";
@@ -398,6 +399,21 @@ export default function ChatPage() {
               <Wifi size={11} style={{ color: "rgba(220,20,60,0.4)" }} />
               <span style={{ fontSize: "10px", letterSpacing: "0.06em" }}>GROQ</span>
             </div>
+
+            <motion.a
+              href="/about"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition-all duration-200"
+              style={{
+                background: "rgba(0, 242, 255, 0.08)",
+                border: "1px solid rgba(0, 242, 255, 0.2)",
+                color: "rgba(0, 242, 255, 0.6)",
+              }}
+            >
+              <Info size={12} />
+              <span style={{ letterSpacing: "0.04em", fontSize: "10px" }}>ABOUT</span>
+            </motion.a>
           </div>
         </div>
 
