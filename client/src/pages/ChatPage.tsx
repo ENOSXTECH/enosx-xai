@@ -255,8 +255,8 @@ export default function ChatPage() {
         conversations={conversations}
         activeId={activeId}
         onSelect={setActiveId}
-        onNew={handleNewChat}
-        onDelete={handleDelete}
+        onNew={createNewChat}
+        onDelete={deleteConversation}
         collapsed={sidebarCollapsed}
         onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
         isPro={isPro}
