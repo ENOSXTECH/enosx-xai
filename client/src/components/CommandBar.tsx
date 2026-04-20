@@ -15,8 +15,7 @@ import {
   MicOff,
   Square,
   Loader2,
-  Paperclip,
-  Globe,
+  Upload,
 } from "lucide-react";
 import { VoiceState } from "@/lib/types";
 
@@ -47,6 +46,7 @@ export default function CommandBar({
 }: CommandBarProps) {
   const [input, setInput] = useState("");
   const [focused, setFocused] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [waveHeights, setWaveHeights] = useState<number[]>(
     Array(WAVEFORM_BARS).fill(0.3)
@@ -111,6 +111,26 @@ export default function CommandBar({
     }
   };
 
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      const file = files[0];
+      const text = `[File: ${file.name} (${(file.size / 1024).toFixed(1)}KB)]`;
+      setInput((prev) => (prev ? prev + "\n" + text : text));
+    }
+  };
+
   const canSend = input.trim().length > 0 && !isLoading && voiceState !== "listening";
   const isVoiceActive = voiceState === "listening" || voiceState === "speaking";
 
@@ -123,6 +143,26 @@ export default function CommandBar({
           background: "linear-gradient(to bottom, transparent, rgba(10,10,10,0.8))",
         }}
       />
+
+      {/* File upload hint */}
+      <AnimatePresence>
+        {isDragging && (
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            className="mb-2 px-4 py-2 rounded-xl text-sm flex items-center justify-center gap-2"
+            style={{
+              background: "rgba(220,20,60,0.15)",
+              border: "1px dashed rgba(220,20,60,0.4)",
+              color: "rgba(220,20,60,0.8)",
+            }}
+          >
+            <Upload size={12} />
+            Drop file to attach
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Voice transcript preview */}
       <AnimatePresence>
@@ -148,6 +188,9 @@ export default function CommandBar({
       {/* Main command bar */}
       <motion.div
         className="relative rounded-2xl overflow-hidden"
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
         animate={
           focused
             ? {

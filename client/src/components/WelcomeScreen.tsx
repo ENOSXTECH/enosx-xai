@@ -9,7 +9,7 @@ import { Sparkles, Code2, Globe, Brain, Lightbulb, Zap } from "lucide-react";
 const BG_URL =
   "https://d2xsxph8kpxj0f.cloudfront.net/310519663581012760/3KsVJNzTNHX32FLQf9aZCC/enosx-bg-mesh-dMF6AjTJ234cK4z3d5pivU.webp";
 const LOGO_URL =
-  "https://d2xsxph8kpxj0f.cloudfront.net/310519663581012760/3KsVJNzTNHX32FLQf9aZCC/enosx-logo-glow-cPEZvmMfhMoVbzpQVGQ3Ck.webp";
+  "/manus-storage/ChatGPTImageApr20,2026,01_59_15PM_d79fe8eb.png";
 
 const SUGGESTIONS = [
   { icon: Code2, text: "Write a React component with TypeScript", color: "#dc143c" },
@@ -53,17 +53,15 @@ export default function WelcomeScreen({ onSuggestion }: WelcomeScreenProps) {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ type: "spring", stiffness: 200, damping: 20 }}
-          className="shimmer mb-6 w-20 h-20 rounded-2xl overflow-hidden"
+          className="mb-8 w-48 h-24 flex items-center justify-center"
           style={{
-            border: "1px solid rgba(220,20,60,0.3)",
-            boxShadow:
-              "0 0 40px rgba(220,20,60,0.2), 0 0 80px rgba(220,20,60,0.1)",
+            filter: "drop-shadow(0 0 20px rgba(220, 20, 60, 0.3))",
           }}
         >
           <img
             src={LOGO_URL}
             alt="ENOSX XAI"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain"
           />
         </motion.div>
 
@@ -161,12 +159,30 @@ export default function WelcomeScreen({ onSuggestion }: WelcomeScreenProps) {
           ))}
         </motion.div>
 
+        {/* Founder credit */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.75 }}
+          className="mt-6 text-center text-xs"
+          style={{
+            color: "rgba(220,20,60,0.6)",
+            letterSpacing: "0.04em",
+          }}
+        >
+          Built by{" "}
+          <span style={{ color: "rgba(220,20,60,0.9)", fontWeight: 600 }}>
+            Enosh
+          </span>
+          {" "}at Enosx Technologies
+        </motion.div>
+
         {/* Powered by badge */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
-          className="mt-8 flex items-center gap-2"
+          className="mt-4 flex items-center gap-2"
           style={{ color: "rgba(255,255,255,0.2)", fontSize: "11px", letterSpacing: "0.06em" }}
         >
           <Zap size={10} style={{ color: "rgba(220,20,60,0.5)" }} />
