@@ -357,7 +357,7 @@ export default function CommandBar({
           style={{ color: "rgba(255,255,255,0.2)", fontSize: "10px", letterSpacing: "0.04em" }}
         >
           <span>Press Enter to send · Shift+Enter for new line</span>
-          <span style={{ color: "rgba(220,20,60,0.4)" }}>GROQ · llama-3.3-70b</span>
+          <span style={{ color: "rgba(0, 242, 255, 0.4)" }}>ENOSX XAI</span>
         </div>
       </motion.div>
     </div>

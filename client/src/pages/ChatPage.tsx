@@ -44,6 +44,7 @@ export default function ChatPage() {
   const [speakingMessageId, setSpeakingMessageId] = useState<string | null>(null);
   const [autoSpeak, setAutoSpeak] = useState(false);
   const [showScrollBtn, setShowScrollBtn] = useState(false);
+  const [isPro, setIsPro] = useState(false); // Pro user state
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
@@ -254,10 +255,11 @@ export default function ChatPage() {
         conversations={conversations}
         activeId={activeId}
         onSelect={setActiveId}
-        onNew={createNewChat}
-        onDelete={deleteConversation}
+        onNew={handleNewChat}
+        onDelete={handleDelete}
         collapsed={sidebarCollapsed}
-        onToggle={() => setSidebarCollapsed((v) => !v)}
+        onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
+        isPro={isPro}
       />
 
       {/* Main area */}

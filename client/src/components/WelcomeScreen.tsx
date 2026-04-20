@@ -118,34 +118,22 @@ export default function WelcomeScreen({ onSuggestion }: WelcomeScreenProps) {
           ))}
         </motion.div>
 
-        {/* Founder credit */}
+        {/* ENOSX Technologies credit */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.75 }}
-          className="mt-6 text-center text-xs"
+          className="mt-8 text-center text-xs"
           style={{
-            color: "rgba(220,20,60,0.6)",
-            letterSpacing: "0.04em",
+            color: "rgba(255,255,255,0.3)",
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
           }}
         >
-          Built by{" "}
-          <span style={{ color: "rgba(220,20,60,0.9)", fontWeight: 600 }}>
-            Enosh
+          © 2026{" "}
+          <span style={{ color: "rgba(0, 242, 255, 0.8)", fontWeight: 600 }}>
+            ENOSX Technologies
           </span>
-          {" "}at Enosx Technologies
-        </motion.div>
-
-        {/* Powered by badge */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="mt-4 flex items-center gap-2"
-          style={{ color: "rgba(255,255,255,0.2)", fontSize: "11px", letterSpacing: "0.06em" }}
-        >
-          <Zap size={10} style={{ color: "rgba(220,20,60,0.5)" }} />
-          <span>POWERED BY GROQ · LLAMA 3.3 70B · ULTRA-FAST INFERENCE</span>
         </motion.div>
       </div>
     </div>

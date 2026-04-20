@@ -18,6 +18,7 @@ import {
   Clock,
 } from "lucide-react";
 import { Conversation } from "@/lib/types";
+import ProBadge from "./ProBadge";
 
 interface SidebarProps {
   conversations: Conversation[];
@@ -27,6 +28,7 @@ interface SidebarProps {
   onDelete: (id: string) => void;
   collapsed: boolean;
   onToggle: () => void;
+  isPro?: boolean;
 }
 
 const LOGO_URL =
@@ -40,6 +42,7 @@ export default function Sidebar({
   onDelete,
   collapsed,
   onToggle,
+  isPro = false,
 }: SidebarProps) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
@@ -118,15 +121,18 @@ export default function Sidebar({
               transition={{ duration: 0.2 }}
               className="flex-1 min-w-0"
             >
-              <div
-                className="font-bold text-sm tracking-tight"
-                style={{ color: "#f0f0f0", letterSpacing: "-0.02em" }}
-              >
-                ENOSX XAI
+              <div className="flex items-center gap-2">
+                <div
+                  className="font-bold text-sm tracking-tight"
+                  style={{ color: "#f0f0f0", letterSpacing: "-0.02em" }}
+                >
+                  ENOSX XAI
+                </div>
+                {isPro && <ProBadge size="sm" showLabel={true} />}
               </div>
               <div
                 className="text-xs"
-                style={{ color: "rgba(220,20,60,0.8)", letterSpacing: "0.06em" }}
+                style={{ color: "rgba(0, 242, 255, 0.6)", letterSpacing: "0.06em" }}
               >
                 ASSISTANT
               </div>
