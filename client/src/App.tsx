@@ -1,0 +1,42 @@
+import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import NotFound from "@/pages/NotFound";
+import { Route, Switch } from "wouter";
+import ErrorBoundary from "./components/ErrorBoundary";
+import { ThemeProvider } from "./contexts/ThemeContext";
+import ChatPage from "./pages/ChatPage";
+
+function Router() {
+  return (
+    <Switch>
+      <Route path={"/"} component={ChatPage} />
+      <Route path={"/404"} component={NotFound} />
+      <Route component={NotFound} />
+    </Switch>
+  );
+}
+
+function App() {
+  return (
+    <ErrorBoundary>
+      <ThemeProvider defaultTheme="dark">
+        <TooltipProvider>
+          <Toaster
+            theme="dark"
+            toastOptions={{
+              style: {
+                background: "rgba(20, 10, 10, 0.95)",
+                border: "1px solid rgba(220, 20, 60, 0.3)",
+                color: "#f0f0f0",
+                backdropFilter: "blur(20px)",
+              },
+            }}
+          />
+          <Router />
+        </TooltipProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
+  );
+}
+
+export default App;

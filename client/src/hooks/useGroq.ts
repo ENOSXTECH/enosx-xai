@@ -1,0 +1,101 @@
+import { useState, useCallback } from "react";
+import { Message } from "@/lib/types";
+
+// API key loaded from environment variable — set VITE_GROQ_API_KEY in .env
+const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY || "";
+const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
+const MODEL = "llama-3.3-70b-versatile";
+
+const SYSTEM_PROMPT = `You are ENOSX XAI, an ultra-intelligent AI assistant built on advanced neural architecture. You are helpful, precise, and articulate. You provide clear, well-structured responses. When appropriate, use markdown formatting for code blocks, lists, and emphasis. You are the premium AI assistant experience — fast, accurate, and sophisticated.`;
+
+export function useGroq() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const sendMessage = useCallback(
+    async (
+      messages: Message[],
+      onChunk: (chunk: string) => void,
+      onDone: () => void
+    ) => {
+      setIsLoading(true);
+      setError(null);
+
+      const groqMessages = [
+        { role: "system", content: SYSTEM_PROMPT },
+        ...messages.map((m) => ({
+          role: m.role,
+          content: m.content,
+        })),
+      ];
+
+      try {
+        const response = await fetch(GROQ_API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${GROQ_API_KEY}`,
+          },
+          body: JSON.stringify({
+            model: MODEL,
+            messages: groqMessages,
+            stream: true,
+            max_tokens: 2048,
+            temperature: 0.7,
+          }),
+        });
+
+        if (!response.ok) {
+          const errData = await response.json().catch(() => ({}));
+          throw new Error(
+            errData?.error?.message || `API error: ${response.status}`
+          );
+        }
+
+        const reader = response.body?.getReader();
+        const decoder = new TextDecoder();
+
+        if (!reader) throw new Error("No response body");
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          const chunk = decoder.decode(value, { stream: true });
+          const lines = chunk.split("\n");
+
+          for (const line of lines) {
+            if (line.startsWith("data: ")) {
+              const data = line.slice(6).trim();
+              if (data === "[DONE]") {
+                onDone();
+                setIsLoading(false);
+                return;
+              }
+              try {
+                const parsed = JSON.parse(data);
+                const content = parsed.choices?.[0]?.delta?.content;
+                if (content) {
+                  onChunk(content);
+                }
+              } catch {
+                // skip malformed chunks
+              }
+            }
+          }
+        }
+
+        onDone();
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : "Unknown error";
+        setError(msg);
+        onDone();
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    []
+  );
+
+  return { sendMessage, isLoading, error };
+}
